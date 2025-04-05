@@ -15,7 +15,10 @@ class CardDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CardsBloc, CardsState>(
       builder: (context, state) {
-        final card = state.cards[cardIndex.clamp(0, state.cards.length - 1)];
+        final card =
+            state.cards.isNotEmpty
+                ? state.cards[cardIndex.clamp(0, state.cards.length - 1)]
+                : null;
         return Scaffold(
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -28,7 +31,7 @@ class CardDetailPage extends StatelessWidget {
               SizedBox(height: 10),
               FloatingActionButton(
                 heroTag: 'delete',
-                onPressed: () => _onDelete(context, card.id),
+                onPressed: () => _onDelete(context, card?.id),
                 backgroundColor: Colors.redAccent,
                 child: Icon(Icons.delete_outline_rounded, color: Colors.white),
               ),
@@ -42,7 +45,7 @@ class CardDetailPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  card.name,
+                  card?.name ?? '',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
               ),
@@ -54,18 +57,21 @@ class CardDetailPage extends StatelessWidget {
                   color: Color(0xFFE6E8EC),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(card.tag),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 20),
-                child: Text(card.description, style: TextStyle(fontSize: 17)),
+                child: Text(card?.tag ?? ''),
               ),
               SizedBox(height: 10),
               Padding(
                 padding: EdgeInsets.only(left: 16, right: 20),
                 child: Text(
-                  '\$${card.price}',
+                  card?.description ?? '',
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.only(left: 16, right: 20),
+                child: Text(
+                  '\$${card?.price ?? ''}',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -76,11 +82,13 @@ class CardDetailPage extends StatelessWidget {
     );
   }
 
-  void _onEdit(BuildContext context, Card card) {
+  void _onEdit(BuildContext context, Card? card) {
+    if (card == null) return;
     Navigator.of(context).pushNamed(Routes.cardForm, arguments: card);
   }
 
-  void _onDelete(BuildContext context, String id) async {
+  void _onDelete(BuildContext context, String? id) async {
+    if (id == null) return;
     Navigator.of(context).pop();
     context.read<CardsBloc>().add(DeleteCard(id));
   }
