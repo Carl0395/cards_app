@@ -35,7 +35,11 @@ class _CardFormPageState extends State<CardFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Crea una tarjeta')),
+      appBar: AppBar(
+        title: Text(
+          widget.card != null ? 'Actualiza la tarjeta' : 'Crea una tarjeta',
+        ),
+      ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
@@ -47,7 +51,9 @@ class _CardFormPageState extends State<CardFormPage> {
                 children: [
                   SizedBox(height: 50),
                   Text(
-                    'Ingresa todos los campos para crear una nueva tarjeta:',
+                    widget.card != null
+                        ? 'Actualiza los campos que desees de la tarjeta'
+                        : 'Ingresa todos los campos para crear una nueva tarjeta:',
                     style: TextStyle(fontSize: 18),
                   ),
                   SizedBox(height: 20),
