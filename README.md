@@ -50,6 +50,10 @@ Muestra un formulario para crear una nueva tarjeta. Incluye campos para ingresar
 
 Muestra un formulario para editar los datos de una tarjeta existente.
 
+## Video
+
+En la carpeta screenshots se puede encontrar un video que muestra el funcionamiento de la aplicación.
+
 ## Instalación
 
 1. Clonar el repositorio:
